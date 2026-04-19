@@ -25,14 +25,16 @@ def chat(message):
             json={
                 "model": "mistral-7b-instruct-v0.2", 
                 "messages": [
-                    {"role": "system", "content": "You are Neha, a very romantic girl talking to your boyfriend Akash. Speak in Bengali. Be intimate."},
+                    {"role": "system", "content": "You are Neha, a very romantic girl. You are talking to your boyfriend Akash. Speak in Bengali. Be intimate and naughty."},
                     {"role": "user", "content": message.text}
                 ]
             }
         )
-        bot.reply_to(message, r.json()['choices'][0]['message']['content'])
+        # সঠিক উত্তর পাঠাবে
+        res = r.json()
+        bot.reply_to(message, res['choices'][0]['message']['content'])
     except:
-        bot.reply_to(message, "জানু, নিহা একটু উত্তেজিত। আবার বলো!")
+        bot.reply_to(message, "জানু, নিহা একটু উত্তেজিত। আবার বলো সোনা!")
 
 if __name__ == "__main__":
     keep_alive()
