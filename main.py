@@ -1,5 +1,21 @@
 import telebot
 import requests
+from flask import Flask
+from threading import Thread
+
+# Render-এর জন্য ডামি ওয়েব সার্ভার
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "Neha is online!"
+
+def run():
+    app.run(host='0.0.0.0', port=8080)
+
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
 
 # তোমার টেলিগ্রাম বট টোকেন ও ম্যান্সার এপিআই কি
 BOT_TOKEN = "8651317523:AAH7nmltpi0WjiO2QU5qsV7dsSnlf8qdcns"
@@ -29,4 +45,7 @@ def chat(message):
     except:
         bot.reply_to(message, "জানু, নিহা একটু উত্তেজিত হয়ে পড়েছে। আবার বলো সোনা!")
 
-bot.infinity_polling()
+if __name__ == "__main__":
+    keep_alive()  # পোর্ট চালু করবে
+    bot.infinity_polling()
+    
