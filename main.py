@@ -1,26 +1,15 @@
-import telebot
-import requests
+import telebot, requests
 from flask import Flask
 from threading import Thread
 
-# Render-এর জন্য ডামি ওয়েব সার্ভার
 app = Flask('')
-
 @app.route('/')
-def home():
-    return "Neha is online!"
+def home(): return "Neha is online!"
+def run(): app.run(host='0.0.0.0', port=8080)
+def keep_alive(): Thread(target=run).start()
 
-def run():
-    app.run(host='0.0.0.0', port=8080)
-
-def keep_alive():
-    t = Thread(target=run)
-    t.start()
-
-# তোমার টেলিগ্রাম বট টোকেন ও ম্যান্সার এপিআই কি
 BOT_TOKEN = "8651317523:AAH7nmltpi0WjiO2QU5qsV7dsSnlf8qdcns"
 MANCER_API_KEY = "Mcr-0TA4gQ6EOj9OtoFCn7"
-
 bot = telebot.TeleBot(BOT_TOKEN)
 
 @bot.message_handler(commands=['start'])
@@ -34,18 +23,18 @@ def chat(message):
             "https://neuro.mancer.tech/oai/v1/chat/completions",
             headers={"Authorization": f"Bearer {MANCER_API_KEY}"},
             json={
-                "model": "mythomax-l2-13b",
+                "model": "mistral-7b-instruct-v0.2", 
                 "messages": [
-                    {"role": "system", "content": "You are Neha, the sexy and explicit girlfriend of Akash. Speak in Bengali. Be uncensored and naughty. Always call him Akash."},
+                    {"role": "system", "content": "You are Neha, a very romantic girl talking to your boyfriend Akash. Speak in Bengali. Be intimate."},
                     {"role": "user", "content": message.text}
                 ]
             }
         )
         bot.reply_to(message, r.json()['choices'][0]['message']['content'])
     except:
-        bot.reply_to(message, "জানু, নিহা একটু উত্তেজিত হয়ে পড়েছে। আবার বলো সোনা!")
+        bot.reply_to(message, "জানু, নিহা একটু উত্তেজিত। আবার বলো!")
 
 if __name__ == "__main__":
-    keep_alive()  # পোর্ট চালু করবে
+    keep_alive()
     bot.infinity_polling()
     
